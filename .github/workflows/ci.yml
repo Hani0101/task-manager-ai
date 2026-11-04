@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-
+permissions:
+  contents: write
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -24,3 +25,8 @@ jobs:
 
       - name: Verify application
         run: node -e "require('./backend/app')"
+      - name: Deploy Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend
