@@ -226,7 +226,10 @@
 	</div>
 
 	<script>
-		const apiBase = window.TASK_API_BASE || 'http://localhost:3000';
+		const apiUrl = new URLSearchParams(window.location.search).get('api');
+		const savedApiUrl = window.localStorage.getItem('TASK_API_BASE');
+		const apiBase = (apiUrl || window.TASK_API_BASE || savedApiUrl || 'http://localhost:3000').replace(/\/$/, '');
+		if (apiUrl) window.localStorage.setItem('TASK_API_BASE', apiUrl);
 		const form = document.querySelector('#task-form');
 		const titleInput = document.querySelector('#title');
 		const descriptionInput = document.querySelector('#description');
