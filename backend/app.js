@@ -56,7 +56,7 @@ app.use((request, response) => {
 });
 
 if (require.main === module) {
-	app.listen(port, () => {
+	app.listen(port, '0.0.0.0', () => {
 		console.log(`Task manager API listening on port ${port}`);
 	});
 }
