@@ -228,8 +228,9 @@
 	<script>
 		const apiUrl = new URLSearchParams(window.location.search).get('api');
 		const savedApiUrl = window.localStorage.getItem('TASK_API_BASE');
-		const apiBase = (apiUrl || window.TASK_API_BASE || savedApiUrl || 'http://localhost:3000').replace(/\/$/, '');
-		if (apiUrl) window.localStorage.setItem('TASK_API_BASE', apiUrl);
+		const configuredApiBase = apiUrl || window.TASK_API_BASE || savedApiUrl || 'http://localhost:3000';
+		const apiBase = configuredApiBase.replace(/^(https?:\/\/)https?:\/\//i, '$1').replace(/\/$/, '');
+		if (apiUrl) window.localStorage.setItem('TASK_API_BASE', apiBase);
 		const isHostedPage = window.location.hostname.endsWith('github.io');
 		const connectionHint = isHostedPage && apiBase.includes('localhost')
 			? ' Set the public Codespaces port URL with ?api=...'
