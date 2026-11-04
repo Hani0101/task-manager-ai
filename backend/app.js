@@ -4,6 +4,18 @@ const app = express();
 const port = process.env.PORT || 3000;
 const tasks = [];
 
+app.use((request, response, next) => {
+	response.setHeader('Access-Control-Allow-Origin', '*');
+	response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+	response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+
+	if (request.method === 'OPTIONS') {
+		return response.sendStatus(204);
+	}
+
+	next();
+});
+
 app.use(express.json());
 
 app.get('/', (request, response) => {
