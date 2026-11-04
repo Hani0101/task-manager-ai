@@ -230,6 +230,10 @@
 		const savedApiUrl = window.localStorage.getItem('TASK_API_BASE');
 		const apiBase = (apiUrl || window.TASK_API_BASE || savedApiUrl || 'http://localhost:3000').replace(/\/$/, '');
 		if (apiUrl) window.localStorage.setItem('TASK_API_BASE', apiUrl);
+		const isHostedPage = window.location.hostname.endsWith('github.io');
+		const connectionHint = isHostedPage && apiBase.includes('localhost')
+			? ' Set the public Codespaces port URL with ?api=...'
+			: ' Check that port 3000 is public and the Codespace is running.';
 		const form = document.querySelector('#task-form');
 		const titleInput = document.querySelector('#title');
 		const descriptionInput = document.querySelector('#description');
@@ -303,7 +307,7 @@
 				form.reset();
 				titleInput.focus();
 			} catch (error) {
-				formError.textContent = error.message || 'Could not connect to the task API.';
+				formError.textContent = `${error.message || 'Could not connect to the task API.'} (${apiBase}).${connectionHint}`;
 			} finally {
 				submitButton.disabled = false;
 				submitButton.textContent = 'Add task';
@@ -320,7 +324,7 @@
 				taskList.replaceChildren();
 				const errorState = document.createElement('li');
 				errorState.className = 'empty';
-				errorState.textContent = 'Could not connect to the task API.';
+				errorState.textContent = `Could not connect to the task API at ${apiBase}.${connectionHint}`;
 				taskList.append(errorState);
 				taskCount.textContent = 'Unavailable';
 			}
